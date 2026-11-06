@@ -1,0 +1,17 @@
+# Backend Laravel
+backend/vendor/
+backend/node_modules/
+backend/.env
+backend/storage/*.key
+backend/storage/logs/*.log
+backend/public/storage
+
+# Frontend React
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# File sampah
+hme.php
+*.log
+.DS_Store
