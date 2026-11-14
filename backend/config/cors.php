@@ -19,7 +19,15 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    /*
+     * Origin frontend yang diizinkan. Bisa lebih dari satu, pisahkan
+     * dengan koma lewat FRONTEND_URL, misal:
+     * FRONTEND_URL=http://localhost:3000,https://company-profile.test
+     */
+    'allowed_origins' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', env('FRONTEND_URL', 'http://localhost:3000,http://127.0.0.1:3000'))
+    ))),
 
     'allowed_origins_patterns' => [],
 
@@ -29,6 +37,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => (bool) env('CORS_SUPPORTS_CREDENTIALS', false),
 
 ];

@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
+    use HasSlug;
+
     protected $fillable = [
         'title',
-        'description',
-        'icon_url',
+        'slug',
+        'short_description',
+        'icon',
     ];
 }

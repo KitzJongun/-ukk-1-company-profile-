@@ -13,8 +13,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('short_description');
-            $table->text('full_content');
-            $table->string('main_image_url')->nullable();
+            $table->text('full_detail');
             $table->date('project_date');
             $table->timestamps();
         });

@@ -9,13 +9,16 @@ use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\ContactController;
 
 // --- ROUTE PUBLIK ---
-Route::post('/login', [AuthController::class, 'login']);
+// Dibatasi agar tidak bisa dibrute-force (5 percobaan per menit per IP).
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 Route::get('/pages', [PageController::class, 'index']);
 Route::get('/pages/{slug}', [PageController::class, 'show']);
 Route::get('/portfolios', [PortfolioController::class, 'index']);
 Route::get('/portfolios/{slug}', [PortfolioController::class, 'show']);
 Route::get('/services', [ServiceController::class, 'index']);
-Route::post('/contact', [ContactController::class, 'store']);
+Route::get('/services/{slug}', [ServiceController::class, 'show']);
+// Dibatasi agar formulir kontak tidak dibanjiri spam.
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:10,1');
 
 // --- ROUTE ADMIN (Wajib Token) ---
 Route::middleware('auth:sanctum')->group(function () {
@@ -36,6 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/admin/services/{id}', [ServiceController::class, 'update']);
     Route::delete('/admin/services/{id}', [ServiceController::class, 'destroy']);
     
-    // Route Admin untuk lihat pesan kontak
+    // Route Admin untuk pesan kontak
     Route::get('/admin/contacts', [ContactController::class, 'index']);
+    Route::patch('/admin/contacts/{id}/read', [ContactController::class, 'markAsRead']);
+    Route::delete('/admin/contacts/{id}', [ContactController::class, 'destroy']);
 });

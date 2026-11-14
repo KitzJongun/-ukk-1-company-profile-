@@ -3,79 +3,108 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PageResource;
 use App\Models\Page;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PageController extends Controller
 {
-    // 1. Tampilkan semua halaman (Bisa diakses publik)
     public function index()
     {
-        return response()->json(Page::all(), 200);
+        return PageResource::collection(Page::latest()->get());
     }
 
-    // 2. Tampilkan 1 halaman berdasarkan slug (Bisa diakses publik)
     public function show($slug)
     {
         $page = Page::where('slug', $slug)->first();
-        if (!$page) {
+
+        if (! $page) {
             return response()->json(['message' => 'Halaman tidak ditemukan'], 404);
         }
-        return response()->json($page, 200);
+
+        return new PageResource($page);
     }
 
-    // 3. Tambah halaman baru (Khusus Admin)
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required',
-            'main_image_url' => 'nullable|url',
+            'content' => 'required|string',
+            'image' => 'nullable|image|max:5120',
         ]);
 
         $page = Page::create([
-            'title' => $request->title,
-            'slug' => Str::slug($request->title),
-            'content' => $request->content,
-            'main_image_url' => $request->main_image_url,
+            'title' => $validated['title'],
+            'slug' => Page::generateSlug($validated['title']),
+            'content' => $validated['content'],
+            'image' => $request->hasFile('image')
+                ? $request->file('image')->store('pages', 'public')
+                : null,
         ]);
 
-        return response()->json(['message' => 'Halaman berhasil dibuat', 'data' => $page], 201);
+        return response()->json([
+            'message' => 'Halaman berhasil dibuat',
+            'data' => new PageResource($page),
+        ], 201);
     }
 
-    // 4. Update halaman (Khusus Admin)
     public function update(Request $request, $id)
     {
         $page = Page::find($id);
-        if (!$page) {
+
+        if (! $page) {
             return response()->json(['message' => 'Halaman tidak ditemukan'], 404);
         }
 
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
-            'content' => 'sometimes|required',
+            'content' => 'sometimes|required|string',
+            'image' => 'nullable|image|max:5120',
+            'remove_image' => 'sometimes|boolean',
         ]);
 
-        $page->update([
-            'title' => $request->title ?? $page->title,
-            'slug' => $request->title ? Str::slug($request->title) : $page->slug,
-            'content' => $request->content ?? $page->content,
-            'main_image_url' => $request->main_image_url ?? $page->main_image_url,
-        ]);
+        if (isset($validated['title']) && $validated['title'] !== $page->title) {
+            $page->slug = Page::generateSlug($validated['title'], $page->id);
+            $page->title = $validated['title'];
+        }
 
-        return response()->json(['message' => 'Halaman berhasil diupdate', 'data' => $page], 200);
+        if (isset($validated['content'])) {
+            $page->content = $validated['content'];
+        }
+
+        if ($request->hasFile('image')) {
+            if ($page->image) {
+                Storage::disk('public')->delete($page->image);
+            }
+            $page->image = $request->file('image')->store('pages', 'public');
+        } elseif ($request->boolean('remove_image') && $page->image) {
+            Storage::disk('public')->delete($page->image);
+            $page->image = null;
+        }
+
+        $page->save();
+
+        return response()->json([
+            'message' => 'Halaman berhasil diupdate',
+            'data' => new PageResource($page),
+        ], 200);
     }
 
-    // 5. Hapus halaman (Khusus Admin)
     public function destroy($id)
     {
         $page = Page::find($id);
-        if (!$page) {
+
+        if (! $page) {
             return response()->json(['message' => 'Halaman tidak ditemukan'], 404);
         }
 
+        if ($page->image) {
+            Storage::disk('public')->delete($page->image);
+        }
+
         $page->delete();
+
         return response()->json(['message' => 'Halaman berhasil dihapus'], 200);
     }
 }

@@ -1,0 +1,9 @@
+# File sisa / artefak lokal
+frontend - Salin.tar
+hme.php
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea
+.vscode
