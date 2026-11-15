@@ -37,11 +37,18 @@ export default function AdminDashboardPage() {
       getAdminPages(token),
       getAdminServices(token),
       getAdminPortfolios(token),
-      getAdminContacts(token),
+      getAdminContacts(token, { perPage: 5 }),
     ])
-      .then(([pages, services, portfolios, messages]) => {
+      .then(([pages, services, portfolios, messagesPayload]) => {
         if (!active) return;
-        setData({ pages, services, portfolios, messages });
+        const messages = messagesPayload?.data ?? [];
+        setData({
+          pages,
+          services,
+          portfolios,
+          messages,
+          messagesTotal: messagesPayload?.meta?.total ?? messages.length,
+        });
       })
       .catch((requestError) => {
         if (!active) return;
@@ -84,7 +91,11 @@ export default function AdminDashboardPage() {
           >
             <p className="text-sm text-slate-600">{card.label}</p>
             <p className="mt-2 text-3xl font-bold text-slate-900">
-              {data ? data[card.key].length : "—"}
+              {data
+                ? card.key === "messages"
+                  ? data.messagesTotal
+                  : data[card.key].length
+                : "—"}
             </p>
           </Link>
         ))}
