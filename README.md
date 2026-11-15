@@ -89,5 +89,8 @@ npm run build
 
 - Gambar yang diunggah disimpan di `backend/storage/app/public` dan disajikan
   melalui symlink `backend/public/storage` (hasil `storage:link`).
+- Jika upload file gagal dengan "unable to create a temporary file" (umum di
+  Windows/Herd), set `upload_tmp_dir` pada `php.ini` yang dipakai (mis.
+  `C:\\xampp\\tmp`) lalu restart server.
 - Token admin disimpan di `localStorage` dan cookie `admin_token` agar middleware
   Next.js dapat menjaga route `/admin/*`.
