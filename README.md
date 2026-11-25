@@ -1,64 +1,48 @@
-<<<<<<< HEAD
 # Nusantara Digital — Company Profile
 
-Aplikasi company profile dengan backend Laravel (REST API) dan frontend Next.js.
-Mencakup halaman publik (beranda, tentang, layanan, portofolio, kontak) serta
-panel admin untuk mengelola konten (pages, services, portfolios) dan pesan kontak.
+Aplikasi company profile dengan **backend Laravel (REST API)** dan **frontend Next.js**.
+Mencakup halaman publik dan panel admin untuk mengelola konten, pesan kontak, serta pengaturan situs.
 
-## Struktur
+## Ringkasan
 
-```
-ukk-1/
-├── backend/   # Laravel 11/12, PHP >= 8.4, Sanctum
-└── frontend/  # Next.js 16 (App Router)
+| Bagian | Teknologi |
+|---|---|
+| Backend | Laravel, PHP >= 8.4, Sanctum |
+| Frontend | Next.js 16 (App Router), Tailwind CSS |
+| Database | MySQL (`ukk_company_profile`) |
+| Fitur admin | CRUD Pages, Services, Portfolios, Inbox Kontak, Pengaturan Situs |
+
+## Desain UI/UX (Figma)
+
+Desain antarmuka dirancang terlebih dahulu menggunakan Figma:
+
+**[https://www.figma.com/site/MBaCWPtJR6EsUKdQSC8Xqp/Untitled?node-id=0-6&t=3EpDayXJWuVeIcHr-1]**
+
+## Struktur Proyek
+
+```text
+ukk-1/x
+├── backend/    # Laravel REST API
+└── frontend/   # Next.js App Router
 ```
 
 ## Prasyarat
 
-- PHP >= 8.4 (dengan ekstensi pdo_sqlite / pdo_mysql)
+- PHP >= 8.4 dengan ekstensi `pdo_mysql`
 - Composer
 - Node.js >= 20
 - npm
 
-## Backend (Laravel)
+## Menjalankan Backend
 
-=======
-# UKK-1 - Website Company Profile Dinamis
-
-Aplikasi Website Company Profile dinamis yang dibuat untuk memenuhi Soal Praktik Kejuruan (SPK) RPL-02.
-Aplikasi ini mengimplementasikan desain dari Figma ke dalam kode React JS (Vite) dan terhubung dengan API Laravel.
-
-## 🎨 Desain UI/UX (Figma)
-Sebelum melakukan pengodean, desain antarmuka dirancang terlebih dahulu menggunakan Figma:
-**[https://www.figma.com/design/5aTc9l3ify5RIkHBwHgit9/Untitled?node-id=0-1&t=0UJVWcPxjQ7xgRDK-1]**
-
-## 🛠️ Teknologi yang Digunakan
-- **Backend:** Laravel (RESTful API + Laravel Sanctum)
-- **Frontend:** React JS (Vite) + Tailwind CSS + Axios
-- **Database:** MySQL (`ukk_company_profile`)
-
-## ✨ Fitur yang Telah Diselesaikan
-1. **Halaman Publik (Guest):** Home, About Us, Services, Portfolio, Contact Us.
-2. **Halaman Admin:** 
-   - Login Admin (Sanctum).
-   - Dashboard dengan Sidebar modern.
-   - CRUD Layanan (Upload Gambar).
-   - CRUD Halaman.
-   - Lihat Pesan Masuk dari form kontak.
-3. **Desain Responsif:** Menggunakan framework Tailwind CSS.
-
-## 🚀 Cara Menjalankan Aplikasi
-### 1. Backend (Laravel)
->>>>>>> 929a2f006cf305fcef9208a4dacbed8eec06a8c3
 ```bash
 cd backend
 composer install
 cp .env.example .env
-<<<<<<< HEAD
 php artisan key:generate
 ```
 
-Atur koneksi database di `.env` (default SQLite). Lalu:
+Atur koneksi database di `.env`, lalu:
 
 ```bash
 php artisan migrate --seed
@@ -66,38 +50,66 @@ php artisan storage:link
 php artisan serve
 ```
 
-API tersedia di `http://127.0.0.1:8000/api`. Seeder membuat akun admin default:
+API tersedia di `http://127.0.0.1:8000/api`.
 
-- Email: `admin@example.com`
-- Password: `password`
+Akun admin default:
 
-## Frontend (Next.js)
+| Field | Value |
+|---|---|
+| Email | `admin@example.com` |
+| Password | `password` |
+
+## Menjalankan Frontend
 
 ```bash
 cd frontend
 npm install
 cp .env.example .env.local
-# sesuaikan NEXT_PUBLIC_API_URL bila backend tidak di 127.0.0.1:8000
 npm run dev
 ```
 
 Frontend tersedia di `http://localhost:3000`.
 
-## Endpoint utama
+## Fitur
 
-Publik:
+### Publik
+- Beranda
+- Tentang
+- Layanan
+- Portofolio
+- Kontak
+- SEO metadata, sitemap, dan robots.txt
+- Informasi kontak dinamis dari pengaturan situs
 
-- `GET /api/pages/{slug}`, `GET /api/services`, `GET /api/services/{slug}`
-- `GET /api/portfolios`, `GET /api/portfolios/{slug}`
+### Admin
+- Login dengan Laravel Sanctum
+- Dashboard ringkasan
+- CRUD halaman statis
+- CRUD layanan dengan upload ikon
+- CRUD portofolio dengan upload gambar
+- Inbox pesan kontak dengan paginasi
+- Pengaturan situs
+
+## Endpoint Utama
+
+### Publik
+- `GET /api/pages/{slug}`
+- `GET /api/services`
+- `GET /api/services/{slug}`
+- `GET /api/portfolios`
+- `GET /api/portfolios/{slug}`
+- `GET /api/settings`
 - `POST /api/contact`
 - `POST /api/login`
 
-Admin (Bearer token):
-
+### Admin (Bearer Token)
 - `GET/POST/PUT/DELETE /api/admin/pages`
 - `GET/POST/PUT/DELETE /api/admin/services`
 - `GET/POST/PUT/DELETE /api/admin/portfolios`
-- `GET /api/admin/contacts`, `PATCH /api/admin/contacts/{id}/read`, `DELETE /api/admin/contacts/{id}`
+- `GET /api/admin/contacts`
+- `PATCH /api/admin/contacts/{id}/read`
+- `DELETE /api/admin/contacts/{id}`
+- `PUT /api/admin/settings`
 
 ## Pengujian
 
@@ -117,16 +129,7 @@ npm run build
 
 ## Catatan
 
-- Gambar yang diunggah disimpan di `backend/storage/app/public` dan disajikan
-  melalui symlink `backend/public/storage` (hasil `storage:link`).
-- Jika upload file gagal dengan "unable to create a temporary file" (umum di
-  Windows/Herd), set `upload_tmp_dir` pada `php.ini` yang dipakai (mis.
-  `C:\\xampp\\tmp`) lalu restart server.
-- Token admin disimpan di `localStorage` dan cookie `admin_token` agar middleware
-  Next.js dapat menjaga route `/admin/*`.
-=======
-# (Sesuaikan DB_DATABASE=ukk_company_profile di .env)
-php artisan key:generate
-php artisan migrate --seed
-php artisan serve
->>>>>>> 929a2f006cf305fcef9208a4dacbed8eec06a8c3
+- Gambar yang diunggah disimpan di `backend/storage/app/public` dan disajikan melalui symlink `backend/public/storage`.
+- Jika upload file gagal dengan “unable to create a temporary file” di Windows/Herd, set `upload_tmp_dir` pada `php.ini`, lalu restart server.
+- Token admin disimpan di `localStorage` dan cookie `admin_token` agar middleware Next.js dapat menjaga route `/admin/*`.
+- Frontend mengonsumsi pengaturan situs dari `/api/settings`; admin dapat mengubahnya melalui menu **Pengaturan**.
