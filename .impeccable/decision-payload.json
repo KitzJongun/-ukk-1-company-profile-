@@ -1,0 +1,245 @@
+{
+  "title": "Choose the visual world",
+  "question": "The roll assigned a product-packaging world. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "kind": "assigned",
+      "label": "Label Stock",
+      "kicker": "THE ROLL",
+      "lineage": "product packaging and label design",
+      "thesis": "The whole company profile is a product package: a label you can read, a barcode you can scan, and a box you can open.",
+      "palette": [
+        "#f2ead9",
+        "#1c1a16",
+        "#b23a2a",
+        "#2a5d3a"
+      ],
+      "materials": [
+        "kraft board",
+        "label stock",
+        "ink",
+        "foil stamp"
+      ],
+      "viewport": "A product label as the first viewport: brand name as product name, services as contents, a barcode rail and a 'contact customer service' seal.",
+      "risk": "Reads as a novelty skin if the label grammar stops at the hero instead of carrying through every section.",
+      "raised": [
+        {
+          "from": "challenger-cyworld",
+          "raise": "Each service is a labeled package on a shelf the visitor can open, not a card in a grid."
+        },
+        {
+          "from": "challenger-nightflight",
+          "raise": "Every section carries the same diagnostic labels (batch, contents, weight) so the eye cross-checks instead of re-reading."
+        },
+        {
+          "from": "challenger-alphabetstorm",
+          "raise": "Headlines are set as product names with real weight, never as display fluff."
+        },
+        {
+          "from": "challenger-provenance",
+          "raise": "Anything not on hand is marked 'out of stock' honestly instead of being hidden or fabricated."
+        }
+      ],
+      "hero": "https://impeccable.style/worlds/cards/design-canon-factory-silkscreen-loft-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/design-canon-factory-silkscreen-loft.webp"
+    },
+    {
+      "id": "model-pick",
+      "kind": "pick",
+      "label": "Morning Paper",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "morning newspaper masthead",
+      "thesis": "The studio presented as a daily paper: a masthead, a front page, and columns a business owner trusts.",
+      "palette": [
+        "#e8e2d2",
+        "#0f0f0f",
+        "#9b1c1c",
+        "#4a4a4a"
+      ],
+      "materials": [
+        "newsprint",
+        "halftone",
+        "column rules"
+      ],
+      "viewport": "A masthead first viewport with the company name as the paper's name, the offer as the headline story, and contact as the 'letters to the editor' rail.",
+      "risk": "Also the direction most runs in this category land on: a newsroom skin is familiar and effective, and you are choosing that trade."
+    },
+    {
+      "id": "challenger-civic",
+      "kind": "challenger",
+      "catalogId": "civic-bureau-prospectus-late-modern",
+      "label": "Civic Bureau",
+      "verdict": "wins",
+      "lineage": "late-modern corporate prospectus",
+      "thesis": "A prospectus for a public body: bone-white plates, a violet ribbon of colour, and a lacquered object that proves the work.",
+      "palette": [
+        "#f7f7fa",
+        "#1b1547",
+        "#6b5ce7",
+        "#7fd8d0"
+      ],
+      "materials": [
+        "bone plate",
+        "violet ribbon",
+        "lacquered bench",
+        "hairline rules"
+      ],
+      "viewport": "A 48/52 split: the argument in two weights of one face on the left, a WebGL ribbon and a lacquered console on the right, a 72px sticky bar above.",
+      "case": "Fuses cleanly: services map to council bands, portfolio to case files. Wins on B2B audience identification and prospectus clarity.",
+      "risk": "Reads as a generic SaaS prospectus if the ribbon and the lacquered object are dropped to accents.",
+      "hero": "https://impeccable.style/worlds/cards/civic-bureau-prospectus-late-modern-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/civic-bureau-prospectus-late-modern.webp"
+    },
+    {
+      "id": "challenger-provenance",
+      "kind": "challenger",
+      "catalogId": "exhibition-museum-curation-provenance-ribbon",
+      "label": "Provenance Ribbon",
+      "verdict": "competitive",
+      "lineage": "museum provenance and custody",
+      "thesis": "The studio's work traced as a red silk ribbon through time: every project a dated fold, every gap shown as unwoven thread.",
+      "palette": [
+        "#f1ead8",
+        "#1a1a1a",
+        "#b22222",
+        "#9a9a9a"
+      ],
+      "materials": [
+        "archival buff",
+        "silk ribbon",
+        "dealer stamp",
+        "hairline type"
+      ],
+      "viewport": "A single ribbon-led column: dated custody folds, geographic movement, and gaps rendered as gray unwoven thread.",
+      "case": "Holds product clarity via transparent process; loses audience (museum register against a business owner).",
+      "risk": "Reads as an exhibition label if the ribbon becomes decoration.",
+      "hero": "https://impeccable.style/worlds/cards/exhibition-museum-curation-provenance-ribbon-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/exhibition-museum-curation-provenance-ribbon.webp"
+    },
+    {
+      "id": "challenger-highlife",
+      "kind": "challenger",
+      "catalogId": "highlife-sleeve",
+      "label": "Highlife Sleeve",
+      "verdict": "competitive",
+      "lineage": "hand-painted tropical record sleeve",
+      "thesis": "The studio as a bandleader's sleeve: a grinning portrait under an arced hand-brushed name, in mango and palm green.",
+      "palette": [
+        "#f4e6c8",
+        "#e8752a",
+        "#2f7a3a",
+        "#2b6fa8"
+      ],
+      "materials": [
+        "painted board",
+        "double outline",
+        "drop shadow"
+      ],
+      "viewport": "An arced hand-brushed band name over a cut-out portrait, with track lists as services below.",
+      "case": "Holds audience identification via Indonesian tropical warmth; loses product clarity (music sleeve against service catalog).",
+      "risk": "Reads as a novelty poster if the arced type is set timidly.",
+      "hero": "https://impeccable.style/worlds/cards/highlife-sleeve-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/highlife-sleeve.webp"
+    },
+    {
+      "id": "challenger-cyworld",
+      "kind": "challenger",
+      "catalogId": "cyworld-minihompy-room",
+      "label": "Minihompy Room",
+      "verdict": "declined",
+      "lineage": "furnishable isometric room",
+      "palette": [
+        "#f7d9e4",
+        "#fff7e0",
+        "#9fd3a8",
+        "#6b8fd4"
+      ],
+      "materials": [
+        "pastel wallpaper",
+        "sticker furnishings",
+        "isometric frame"
+      ],
+      "case": "Fuses poorly: playful furnishing reads as a toy, not B2B credibility.",
+      "kept": "Identity as a space visitors can enter and furnish.",
+      "hero": "https://impeccable.style/worlds/cards/cyworld-minihompy-room-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/cyworld-minihompy-room.webp"
+    },
+    {
+      "id": "challenger-nightflight",
+      "kind": "challenger",
+      "catalogId": "signals-instruments-night-flight-six-pack",
+      "label": "Night Flight Six-Pack",
+      "verdict": "declined",
+      "lineage": "aircraft instrument panel",
+      "palette": [
+        "#0a0a0a",
+        "#f5f5f5",
+        "#6bff7a",
+        "#ffb347"
+      ],
+      "materials": [
+        "matte panel",
+        "luminous dial",
+        "radium glow"
+      ],
+      "case": "Fuses poorly: an instrument panel reads as cockpit cosplay for an agency.",
+      "kept": "Cross-check reading order across a fixed constellation.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-night-flight-six-pack-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/signals-instruments-night-flight-six-pack.webp"
+    },
+    {
+      "id": "challenger-alphabetstorm",
+      "kind": "challenger",
+      "catalogId": "dream-surreal-impossible-worlds-alphabet-storm",
+      "label": "Alphabet Storm",
+      "verdict": "declined",
+      "lineage": "letters as weather",
+      "palette": [
+        "#fafafa",
+        "#0a0a0a",
+        "#c0c0c0",
+        "#e0e0e0"
+      ],
+      "materials": [
+        "paper white",
+        "storm ink",
+        "rain gray"
+      ],
+      "case": "Fuses poorly: surreal weather erases service clarity.",
+      "kept": "Type as matter, not decoration.",
+      "hero": "https://impeccable.style/worlds/cards/dream-surreal-impossible-worlds-alphabet-storm-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/dream-surreal-impossible-worlds-alphabet-storm.webp"
+    }
+  ],
+  "reroll": {
+    "registers": [
+      "safer",
+      "bolder"
+    ]
+  },
+  "buildPath": {
+    "value": "code",
+    "toggle": false
+  },
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "The category standard",
+    "thesis": "What this category ships, executed impeccably: a clean grid, real product photography, and a visitor who knows exactly where to click.",
+    "palette": [
+      "#ffffff",
+      "#111827",
+      "#2563eb",
+      "#64748b"
+    ],
+    "materials": [
+      "clean grid",
+      "product photography",
+      "sans type"
+    ],
+    "viewport": "The arrangement a visitor expects, at full craft: hero, three services, three portfolio items, CTA.",
+    "risk": "Indistinguishable from the competition by design."
+  },
+  "steer": true
+}

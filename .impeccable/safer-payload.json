@@ -1,0 +1,99 @@
+{
+  "title": "Choose a safer visual world",
+  "question": "Safer register: three conventional directions plus the category standard. Pick one, or re-roll again.",
+  "options": [
+    {
+      "id": "safer-annual",
+      "kind": "grounded",
+      "label": "Annual Report",
+      "lineage": "corporate annual report",
+      "thesis": "The studio presented as a credible company: clean white plates, navy ink, and a quiet grid a procurement officer trusts.",
+      "palette": [
+        "#ffffff",
+        "#0f172a",
+        "#1e3a8a",
+        "#64748b"
+      ],
+      "materials": [
+        "white plate",
+        "navy ink",
+        "hairline rules"
+      ],
+      "viewport": "A clean hero with headline and primary action, three service tiles, three portfolio items, contact CTA. No decoration beyond the grid.",
+      "risk": "Reads as every other agency site; safe, but indistinguishable without the craft.",
+      "case": "Familiar register: the conventional end of the candidate list."
+    },
+    {
+      "id": "safer-letter",
+      "kind": "grounded",
+      "label": "Studio Letter",
+      "lineage": "printed studio letter",
+      "thesis": "A letter from the studio: warm cream paper, charcoal ink, a single amber accent, and serif headlines that read like a memo.",
+      "palette": [
+        "#faf7f2",
+        "#1f1c18",
+        "#a16207",
+        "#78716c"
+      ],
+      "materials": [
+        "cream paper",
+        "charcoal ink",
+        "amber rule"
+      ],
+      "viewport": "A letter-style hero with the offer as a headline, a short paragraph, and a contact line; services and portfolio as simple lists below.",
+      "risk": "Reads as a blog or newsletter if the letter metaphor is not carried through.",
+      "case": "Familiar register: warm and readable, low risk."
+    },
+    {
+      "id": "safer-spec",
+      "kind": "grounded",
+      "label": "Spec Sheet",
+      "lineage": "technical specification sheet",
+      "thesis": "A specification sheet: white ground, black ink, one accent, and a swiss grid that reads like documentation.",
+      "palette": [
+        "#ffffff",
+        "#0a0a0a",
+        "#2563eb",
+        "#737373"
+      ],
+      "materials": [
+        "white ground",
+        "black ink",
+        "blue accent"
+      ],
+      "viewport": "A spec-sheet hero: title, version line, contents table, and a contact action. Dense, precise, no ornament.",
+      "risk": "Reads as documentation, not a persuasive site, if the action is buried.",
+      "case": "Familiar register: precise and trustworthy."
+    }
+  ],
+  "reroll": {
+    "registers": [
+      "safer",
+      "bolder"
+    ]
+  },
+  "buildPath": {
+    "value": "code",
+    "toggle": false
+  },
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "The category standard",
+    "thesis": "What this category ships, executed impeccably: a clean grid, real product photography, and a visitor who knows exactly where to click.",
+    "palette": [
+      "#ffffff",
+      "#111827",
+      "#2563eb",
+      "#64748b"
+    ],
+    "materials": [
+      "clean grid",
+      "product photography",
+      "sans type"
+    ],
+    "viewport": "The arrangement a visitor expects, at full craft: hero, three services, three portfolio items, CTA.",
+    "risk": "Indistinguishable from the competition by design."
+  },
+  "steer": true
+}

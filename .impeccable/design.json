@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-18T00:00:00.000Z",
+  "title": "Design System: Nusantara Digital",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Stamp Red", "canonical": "oklch(52% 0.18 25)", "tonalRamp": ["#4a1812", "#6b231a", "#8f2e22", "#b23a2a", "#c24a3e", "#dd736b", "#eaa09a", "#f5c9c4"] },
+      "ground": { "role": "neutral", "displayName": "Kraft Cream", "canonical": "oklch(93% 0.03 80)", "tonalRamp": ["#c9b89a", "#d4c3a0", "#e6d9be", "#f2ead9", "#faf6ee", "#fdfaf4", "#ffffff", "#ffffff"] },
+      "ink": { "role": "neutral", "displayName": "Warm Ink", "canonical": "oklch(18% 0.02 60)", "tonalRamp": ["#000000", "#1c1a16", "#3a3530", "#6b5a45", "#9a8a75", "#c9b89a", "#e6d9be", "#f2ead9"] },
+      "seal": { "role": "secondary", "displayName": "Foil Green", "canonical": "oklch(42% 0.1 150)", "tonalRamp": ["#1f4a2c", "#2a5d3a", "#3a7a4a", "#4a8a5a", "#6aaa7a", "#8acaa0", "#b0e0c0", "#d6f0e0"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero product name and section openers. One per viewport." },
+      "body": { "displayName": "Body", "purpose": "Paragraphs and descriptions. Max 65-75ch." },
+      "label": { "displayName": "Label", "purpose": "SKU, batch, metadata, section eyebrows." }
+    },
+    "shadows": [
+      { "name": "label", "value": "0 1px 0 rgba(28,26,22,0.08), 0 8px 24px -12px rgba(28,26,22,0.18)", "purpose": "Lifts the hero label card off the page ground." }
+    ],
+    "motion": [
+      { "name": "hover-lift", "value": "transform 0.15s ease", "purpose": "Card hover lift of 2px." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Stamp red ground, kraft text. The single dominant action per viewport.",
+      "html": "<button class=\"ds-btn-primary\">HUBUNGI KAMI</button>",
+      "css": ".ds-btn-primary { background: #b23a2a; color: #faf6ee; padding: 10px 20px; border: none; border-radius: 2px; font-family: 'Work Sans', system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; cursor: pointer; transition: background 0.15s ease; } .ds-btn-primary:hover { background: #8f2e22; } .ds-btn-primary:focus-visible { outline: 2px solid #b23a2a; outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Transparent ground, 2px ink border. Inverts on hover.",
+      "html": "<button class=\"ds-btn-outline\">LIHAT LAYANAN</button>",
+      "css": ".ds-btn-outline { background: transparent; color: #1c1a16; padding: 10px 20px; border: 2px solid #1c1a16; border-radius: 2px; font-family: 'Work Sans', system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; cursor: pointer; transition: background 0.15s ease, color 0.15s ease; } .ds-btn-outline:hover { background: #1c1a16; color: #f2ead9; }"
+    },
+    {
+      "name": "Seal Button",
+      "kind": "button",
+      "refersTo": "button-seal",
+      "description": "Pill-shaped stamp red seal. Hero CTA only.",
+      "html": "<button class=\"ds-btn-seal\">HUBUNGI CUSTOMER SERVICE</button>",
+      "css": ".ds-btn-seal { background: #b23a2a; color: #faf6ee; padding: 12px 24px; border: 2px solid #b23a2a; border-radius: 9999px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: background 0.15s ease; } .ds-btn-seal:hover { background: #8f2e22; }"
+    },
+    {
+      "name": "Label Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Mono uppercase metadata tag.",
+      "html": "<span class=\"ds-chip\">SKU ND-001</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border: 1px solid #1c1a16; border-radius: 2px; background: #faf6ee; color: #3a3530; font-family: 'JetBrains Mono', monospace; font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Kraft-light panel with 2px ink border. Lifts 2px on hover.",
+      "html": "<div class=\"ds-card\"><p class=\"ds-card-title\">Layanan</p><p class=\"ds-card-body\">Deskripsi singkat layanan.</p></div>",
+      "css": ".ds-card { background: #faf6ee; color: #1c1a16; border: 2px solid #1c1a16; border-radius: 2px; padding: 20px; transition: transform 0.15s ease; } .ds-card:hover { transform: translateY(-2px); } .ds-card-title { font-family: 'Archivo', system-ui, sans-serif; font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; margin: 0 0 8px; } .ds-card-body { font-family: 'Work Sans', system-ui, sans-serif; font-size: 0.875rem; line-height: 1.6; color: #3a3530; margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Product Label",
+    "overview": "The whole company profile is a product package. A label you can read, a barcode you can scan, a box you can open. The category default - a gradient hero over a three-card grid - is refused outright. Transparency is the mechanism, and a package's label is the most honest surface in commerce.",
+    "keyCharacteristics": [
+      "Kraft-cream ground with warm near-black ink; stamp red carries all primary actions and seals.",
+      "Square label corners (2px) with occasional die-cut notch; no rounded SaaS cards.",
+      "Mono labels (JetBrains Mono, uppercase, tracked) for SKU, batch, and metadata.",
+      "Archivo Black headlines set as product names, never as display fluff.",
+      "Hairline rules separate content instead of shadows.",
+      "Every section carries the same diagnostic labels so the eye cross-checks."
+    ],
+    "rules": [
+      { "name": "The One Stamp Rule", "body": "Stamp red is used on at most one dominant action per viewport.", "section": "colors" },
+      { "name": "The No Pure Black Rule", "body": "Text and borders use warm ink (#1c1a16), never #000000.", "section": "colors" },
+      { "name": "The Product Name Rule", "body": "Headlines are set as product names with real weight, never as display fluff.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. Elevation appears only as a response to state.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do print the contents on the label: every section carries its SKU/batch code and eyebrow.",
+      "Do use stamp red for at most one dominant action per viewport.",
+      "Do separate sections with 2px ink rules, not whitespace alone.",
+      "Do set headlines as product names with real weight (Archivo Black).",
+      "Do mark anything not on hand as empty state honestly."
+    ],
+    "donts": [
+      "Don't use gradients, glass, or rounded SaaS cards.",
+      "Don't use pure black (#000) or pure white (#fff).",
+      "Don't fabricate testimonials, client logos, or verified metrics.",
+      "Don't use more than one stamp-red button per viewport.",
+      "Don't hardcode services/portfolios/pages - they come from the Laravel API."
+    ]
+  }
+}
