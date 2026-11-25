@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPage } from "@/lib/api";
@@ -46,11 +47,14 @@ export default async function DynamicPage({ params }) {
         <article className="lg:col-span-2">
           {page.image && (
             <div className="mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={page.image}
                 alt={page.title}
-                className="max-h-[420px] w-full object-cover"
+                width={1200}
+                height={675}
+                sizes="100vw"
+                className="h-auto max-h-[420px] w-full object-cover"
+                loading="lazy"
               />
             </div>
           )}

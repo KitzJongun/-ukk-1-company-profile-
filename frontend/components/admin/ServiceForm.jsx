@@ -116,6 +116,17 @@ export default function ServiceForm({ initial, onSaved, onCancel }) {
             </label>
           </>
         )}
+        {icon && (
+          <div className="mt-3">
+            <p className="mb-1 text-xs text-slate-500">Pratinjau ikon baru:</p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={URL.createObjectURL(icon)}
+              alt="Pratinjau"
+              className="h-14 w-14 rounded-lg border border-slate-200 object-contain p-1"
+            />
+          </div>
+        )}
       </Field>
 
       <FormActions submitting={submitting} onCancel={onCancel} />

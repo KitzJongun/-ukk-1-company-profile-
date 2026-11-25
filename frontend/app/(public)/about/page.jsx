@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getPage } from "@/lib/api";
 
 export const revalidate = 60;
@@ -81,11 +82,13 @@ export default async function AboutPage() {
 
         <aside className="space-y-4">
           {page.image && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={page.image}
               alt={page.title}
-              className="w-full rounded-xl object-cover"
+              width={800}
+              height={600}
+              className="h-auto w-full rounded-xl object-cover"
+              loading="lazy"
             />
           )}
 

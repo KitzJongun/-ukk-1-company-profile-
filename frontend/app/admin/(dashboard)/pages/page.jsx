@@ -6,6 +6,7 @@ import Modal from "@/components/admin/Modal";
 import PageForm from "@/components/admin/PageForm";
 import SearchInput from "@/components/admin/SearchInput";
 import Toast from "@/components/admin/Toast";
+import ConfirmDialog from "@/components/admin/ConfirmDialog";
 import { deleteAdminResource, getAdminPages } from "@/lib/api";
 import { describeError, formatDateTime, getToken, useAdminList } from "@/lib/admin";
 
@@ -17,6 +18,8 @@ export default function AdminPagesPage() {
   const [actionError, setActionError] = useState("");
   const [query, setQuery] = useState("");
   const [toast, setToast] = useState("");
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const closeForm = () => setEditing(null);
 
@@ -35,16 +38,24 @@ export default function AdminPagesPage() {
     await reload();
   };
 
-  const handleDelete = async (page) => {
-    if (!window.confirm(`Hapus halaman "${page.title}"?`)) return;
+  const handleDelete = (page) => {
+    setActionError("");
+    setConfirmTarget(page);
+  };
 
+  const confirmDelete = async () => {
+    if (!confirmTarget) return;
+    setDeleting(true);
     setActionError("");
     try {
-      await deleteAdminResource(getToken(), "pages", page.id);
+      await deleteAdminResource(getToken(), "pages", confirmTarget.id);
       setToast("Halaman berhasil dihapus.");
+      setConfirmTarget(null);
       await reload();
     } catch (requestError) {
       setActionError(describeError(requestError));
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -70,6 +81,14 @@ export default function AdminPagesPage() {
       className: "text-right",
       render: (page) => (
         <div className="flex justify-end gap-2">
+          <a
+            href={`/p/${page.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
+          >
+            Lihat
+          </a>
           <button
             type="button"
             onClick={() => setEditing(page)}
@@ -116,6 +135,7 @@ export default function AdminPagesPage() {
         columns={columns}
         rows={filtered}
         loading={loading}
+        pageSize={10}
         emptyMessage={
           items.length > 0
             ? "Tidak ada halaman yang cocok dengan pencarian."
@@ -124,6 +144,15 @@ export default function AdminPagesPage() {
       />
 
       <Toast message={toast} onClose={() => setToast("")} />
+
+      <ConfirmDialog
+        open={confirmTarget !== null}
+        title="Hapus halaman"
+        message={confirmTarget ? `Hapus halaman "${confirmTarget.title}"?` : ""}
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmTarget(null)}
+        loading={deleting}
+      />
 
       <Modal
         open={editing !== null}

@@ -14,7 +14,7 @@ export default function AdminLoginPage() {
 
   // Sudah punya token? langsung masuk dashboard.
   useEffect(() => {
-    if (getToken()) router.replace("/admin");
+    if (getToken()) router.replace("/admin/dashboard");
   }, [router]);
 
   const handleChange = (event) => {
@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
     try {
       const result = await loginAdmin(form);
       setSession({ token: result.token, admin: result.admin });
-      router.replace("/admin");
+      router.replace("/admin/dashboard");
     } catch (requestError) {
       setError(describeError(requestError));
       setSubmitting(false);
@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="flex flex-1 items-center justify-center bg-slate-100 px-4 py-12">
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-sm sm:max-w-md">
         <div className="mb-6 text-center">
           <span className="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-brand-600 text-sm font-bold text-white">
             ND
@@ -73,6 +73,9 @@ export default function AdminLoginPage() {
               name="email"
               type="email"
               autoComplete="username"
+              inputMode="email"
+              enterKeyHint="next"
+              autoFocus
               required
               value={form.email}
               onChange={handleChange}
@@ -90,6 +93,7 @@ export default function AdminLoginPage() {
               name="password"
               type="password"
               autoComplete="current-password"
+              enterKeyHint="done"
               required
               value={form.password}
               onChange={handleChange}

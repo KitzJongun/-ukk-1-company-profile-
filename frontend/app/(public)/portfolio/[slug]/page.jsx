@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPortfolio } from "@/lib/api";
@@ -76,11 +77,14 @@ export default async function PortfolioDetailPage({ params }) {
       {images.length > 0 && (
         <section className="container-page pt-10">
           <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={images[0].image_url}
               alt={portfolio.title}
-              className="max-h-[520px] w-full object-cover"
+              width={1200}
+              height={675}
+              sizes="100vw"
+              className="h-auto max-h-[520px] w-full object-cover"
+              loading="eager"
             />
           </div>
         </section>
@@ -119,13 +123,14 @@ export default async function PortfolioDetailPage({ params }) {
             {images.slice(1).map((image) => (
               <div
                 key={image.id}
-                className="overflow-hidden rounded-xl border border-slate-200 bg-slate-100"
+                className="relative aspect-[4/3] overflow-hidden rounded-xl border border-slate-200 bg-slate-100"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src={image.image_url}
                   alt={`${portfolio.title} — dokumentasi`}
-                  className="aspect-[4/3] w-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover"
                   loading="lazy"
                 />
               </div>

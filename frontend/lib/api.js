@@ -99,22 +99,21 @@ export async function getPage(slug) {
   }
 }
 
-export async function getPages() {
+export async function getSettings(revalidate = 60) {
   try {
-    const result = await apiFetch("/pages");
-    return result?.data ?? [];
+    const result = await apiFetch("/settings", { revalidate });
+    return result?.data ?? {};
   } catch {
-    return [];
+    return {};
   }
 }
 
 /* ------------------------------- Kontak ---------------------------------- */
 
-export async function sendContactMessage({ name, email, message, website }) {
+export async function sendContactMessage({ name, email, phone, subject, message, website }) {
   return apiFetch("/contact", {
     method: "POST",
-    // `website` adalah honeypot: harus kosong, diisi hanya oleh bot.
-    body: { name, email, message, website },
+    body: { name, email, phone, subject, message, website },
     revalidate: 0,
   });
 }
@@ -122,7 +121,7 @@ export async function sendContactMessage({ name, email, message, website }) {
 /* --------------------------------- Admin --------------------------------- */
 
 export async function loginAdmin({ email, password }) {
-  return apiFetch("/login", {
+  return apiFetch("/admin/login", {
     method: "POST",
     body: { email, password },
     revalidate: 0,
@@ -135,24 +134,24 @@ export async function loginAdmin({ email, password }) {
  */
 export async function logoutAdmin(token) {
   try {
-    return await apiFetch("/logout", { method: "POST", token, revalidate: 0 });
+    return await apiFetch("/admin/logout", { method: "POST", token, revalidate: 0 });
   } catch {
     return null;
   }
 }
 
 export async function getAdminPages(token) {
-  const result = await apiFetch("/pages", { token, revalidate: 0 });
+  const result = await apiFetch("/admin/pages", { token, revalidate: 0 });
   return result?.data ?? [];
 }
 
 export async function getAdminServices(token) {
-  const result = await apiFetch("/services", { token, revalidate: 0 });
+  const result = await apiFetch("/admin/services", { token, revalidate: 0 });
   return result?.data ?? [];
 }
 
 export async function getAdminPortfolios(token) {
-  const result = await apiFetch("/portfolios", { token, revalidate: 0 });
+  const result = await apiFetch("/admin/portfolios", { token, revalidate: 0 });
   return result?.data ?? [];
 }
 
@@ -167,11 +166,11 @@ export async function getAdminContacts(token, { page = 1, perPage = 10, unread =
 
   if (unread) query.set("unread", "1");
 
-  return apiFetch(`/admin/contacts?${query.toString()}`, { token, revalidate: 0 });
+  return apiFetch(`/admin/contact-messages?${query.toString()}`, { token, revalidate: 0 });
 }
 
 export async function markContactRead(token, id) {
-  return apiFetch(`/admin/contacts/${id}/read`, {
+  return apiFetch(`/admin/contact-messages/${id}/read`, {
     method: "PATCH",
     token,
     revalidate: 0,
@@ -179,7 +178,7 @@ export async function markContactRead(token, id) {
 }
 
 export async function deleteContact(token, id) {
-  return deleteAdminResource(token, "contacts", id);
+  return deleteAdminResource(token, "contact-messages", id);
 }
 
 /**
@@ -242,6 +241,15 @@ export async function saveAdminPortfolio(token, id, values) {
   return adminFormRequest(token, "portfolios", id, values);
 }
 
+export async function saveAdminSettings(token, settings) {
+  return apiFetch("/admin/settings", {
+    method: "PUT",
+    token,
+    body: { settings },
+    revalidate: 0,
+  });
+}
+
 export async function deleteAdminResource(token, resource, id) {
   return apiFetch(`/admin/${resource}/${id}`, {
     method: "DELETE",
@@ -249,5 +257,3 @@ export async function deleteAdminResource(token, resource, id) {
     revalidate: 0,
   });
 }
-
-export { API_URL };

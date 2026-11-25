@@ -1,3 +1,4 @@
+import { getSettings } from "@/lib/api";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata = {
@@ -6,14 +7,15 @@ export const metadata = {
     "Hubungi Nusantara Digital untuk konsultasi website, aplikasi, dan strategi konten.",
 };
 
-const contactDetails = [
-  { label: "Alamat", value: "Jl. Merdeka No. 10, Jakarta" },
-  { label: "Email", value: "hello@nusantaradigital.id" },
-  { label: "Telepon", value: "+62 812 3456 7890" },
-  { label: "Jam kerja", value: "Senin–Jumat, 09.00–17.00 WIB" },
-];
+export default async function ContactPage() {
+  const settings = await getSettings();
+  const contactDetails = [
+    { label: "Alamat", value: settings.address || "Jl. Merdeka No. 10, Jakarta" },
+    { label: "Email", value: settings.email || "hello@nusantaradigital.id" },
+    { label: "Telepon", value: settings.phone || "+62 812 3456 7890" },
+    { label: "Jam kerja", value: settings.working_hours || "Senin–Jumat, 09.00–17.00 WIB" },
+  ];
 
-export default function ContactPage() {
   return (
     <>
       <section className="border-b border-slate-200 bg-white">

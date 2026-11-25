@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getService, getServices } from "@/lib/api";
@@ -39,11 +40,13 @@ export default async function ServiceDetailPage({ params }) {
 
           <div className="mt-5 flex items-start gap-4">
             {service.icon ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={service.icon}
-                alt=""
+                alt={service.title ? `Ikon ${service.title}` : ""}
+                width={64}
+                height={64}
                 className="h-16 w-16 rounded-xl border border-slate-200 object-contain p-2"
+                loading="lazy"
               />
             ) : (
               <span className="grid h-16 w-16 shrink-0 place-items-center rounded-xl bg-brand-50 text-2xl font-bold text-brand-700">

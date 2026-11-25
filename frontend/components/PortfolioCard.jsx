@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const dateFormatter = new Intl.DateTimeFormat("id-ID", {
@@ -22,13 +23,14 @@ export default function PortfolioCard({ portfolio }) {
       href={`/portfolio/${portfolio.slug}`}
       className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md"
     >
-      <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
         {cover ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={cover}
             alt={portfolio.title}
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition duration-300 group-hover:scale-105"
             loading="lazy"
           />
         ) : (

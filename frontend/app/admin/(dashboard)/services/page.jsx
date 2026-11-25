@@ -6,6 +6,7 @@ import Modal from "@/components/admin/Modal";
 import ServiceForm from "@/components/admin/ServiceForm";
 import SearchInput from "@/components/admin/SearchInput";
 import Toast from "@/components/admin/Toast";
+import ConfirmDialog from "@/components/admin/ConfirmDialog";
 import { deleteAdminResource, getAdminServices } from "@/lib/api";
 import { describeError, formatDateTime, getToken, useAdminList } from "@/lib/admin";
 
@@ -17,6 +18,8 @@ export default function AdminServicesPage() {
   const [actionError, setActionError] = useState("");
   const [query, setQuery] = useState("");
   const [toast, setToast] = useState("");
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const filtered = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -33,16 +36,24 @@ export default function AdminServicesPage() {
     await reload();
   };
 
-  const handleDelete = async (service) => {
-    if (!window.confirm(`Hapus layanan "${service.title}"?`)) return;
+  const handleDelete = (service) => {
+    setActionError("");
+    setConfirmTarget(service);
+  };
 
+  const confirmDelete = async () => {
+    if (!confirmTarget) return;
+    setDeleting(true);
     setActionError("");
     try {
-      await deleteAdminResource(getToken(), "services", service.id);
+      await deleteAdminResource(getToken(), "services", confirmTarget.id);
       setToast("Layanan berhasil dihapus.");
+      setConfirmTarget(null);
       await reload();
     } catch (requestError) {
       setActionError(describeError(requestError));
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -84,6 +95,14 @@ export default function AdminServicesPage() {
       className: "text-right",
       render: (service) => (
         <div className="flex justify-end gap-2">
+          <a
+            href={`/services/${service.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
+          >
+            Lihat
+          </a>
           <button
             type="button"
             onClick={() => setEditing(service)}
@@ -130,6 +149,7 @@ export default function AdminServicesPage() {
         columns={columns}
         rows={filtered}
         loading={loading}
+        pageSize={10}
         emptyMessage={
           items.length > 0
             ? "Tidak ada layanan yang cocok dengan pencarian."
@@ -138,6 +158,15 @@ export default function AdminServicesPage() {
       />
 
       <Toast message={toast} onClose={() => setToast("")} />
+
+      <ConfirmDialog
+        open={confirmTarget !== null}
+        title="Hapus layanan"
+        message={confirmTarget ? `Hapus layanan "${confirmTarget.title}"?` : ""}
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmTarget(null)}
+        loading={deleting}
+      />
 
       <Modal
         open={editing !== null}

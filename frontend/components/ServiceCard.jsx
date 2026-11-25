@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function ServiceCard({ service }) {
@@ -9,11 +10,11 @@ export default function ServiceCard({ service }) {
       className="group flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:border-brand-500 hover:shadow-md"
     >
       {service.icon ? (
-        // Ikon berasal dari storage Laravel, ukurannya bervariasi.
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src={service.icon}
-          alt=""
+          alt={service.title ? `Ikon ${service.title}` : ""}
+          width={48}
+          height={48}
           className="h-12 w-12 rounded-lg object-contain"
           loading="lazy"
         />

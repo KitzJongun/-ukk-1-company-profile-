@@ -7,11 +7,12 @@ import { clearSession, getAdminUser, getToken } from "@/lib/admin";
 import { getAdminContacts, logoutAdmin } from "@/lib/api";
 
 const navItems = [
-  { href: "/admin", label: "Dashboard", exact: true },
+  { href: "/admin/dashboard", label: "Dashboard", exact: true },
   { href: "/admin/pages", label: "Pages" },
   { href: "/admin/services", label: "Services" },
   { href: "/admin/portfolios", label: "Portfolios" },
   { href: "/admin/messages", label: "Pesan Kontak" },
+  { href: "/admin/settings", label: "Pengaturan" },
 ];
 
 function isActive(pathname, item) {

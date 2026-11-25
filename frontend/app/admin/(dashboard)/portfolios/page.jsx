@@ -6,6 +6,7 @@ import Modal from "@/components/admin/Modal";
 import PortfolioForm from "@/components/admin/PortfolioForm";
 import SearchInput from "@/components/admin/SearchInput";
 import Toast from "@/components/admin/Toast";
+import ConfirmDialog from "@/components/admin/ConfirmDialog";
 import { deleteAdminResource, getAdminPortfolios } from "@/lib/api";
 import { describeError, formatDateTime, getToken, useAdminList } from "@/lib/admin";
 
@@ -17,6 +18,8 @@ export default function AdminPortfoliosPage() {
   const [actionError, setActionError] = useState("");
   const [query, setQuery] = useState("");
   const [toast, setToast] = useState("");
+  const [confirmTarget, setConfirmTarget] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const filtered = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -33,22 +36,24 @@ export default function AdminPortfoliosPage() {
     await reload();
   };
 
-  const handleDelete = async (portfolio) => {
-    if (
-      !window.confirm(
-        `Hapus portofolio "${portfolio.title}" beserta semua gambarnya?`
-      )
-    ) {
-      return;
-    }
+  const handleDelete = (portfolio) => {
+    setActionError("");
+    setConfirmTarget(portfolio);
+  };
 
+  const confirmDelete = async () => {
+    if (!confirmTarget) return;
+    setDeleting(true);
     setActionError("");
     try {
-      await deleteAdminResource(getToken(), "portfolios", portfolio.id);
+      await deleteAdminResource(getToken(), "portfolios", confirmTarget.id);
       setToast("Portofolio berhasil dihapus.");
+      setConfirmTarget(null);
       await reload();
     } catch (requestError) {
       setActionError(describeError(requestError));
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -100,6 +105,14 @@ export default function AdminPortfoliosPage() {
       className: "text-right",
       render: (portfolio) => (
         <div className="flex justify-end gap-2">
+          <a
+            href={`/portfolio/${portfolio.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-md border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
+          >
+            Lihat
+          </a>
           <button
             type="button"
             onClick={() => setEditing(portfolio)}
@@ -146,6 +159,7 @@ export default function AdminPortfoliosPage() {
         columns={columns}
         rows={filtered}
         loading={loading}
+        pageSize={10}
         emptyMessage={
           items.length > 0
             ? "Tidak ada portofolio yang cocok dengan pencarian."
@@ -154,6 +168,15 @@ export default function AdminPortfoliosPage() {
       />
 
       <Toast message={toast} onClose={() => setToast("")} />
+
+      <ConfirmDialog
+        open={confirmTarget !== null}
+        title="Hapus portofolio"
+        message={confirmTarget ? `Hapus portofolio "${confirmTarget.title}" beserta semua gambarnya?` : ""}
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmTarget(null)}
+        loading={deleting}
+      />
 
       <Modal
         open={editing !== null}

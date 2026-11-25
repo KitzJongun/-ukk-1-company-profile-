@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import DataTable from "@/components/admin/DataTable";
 import Modal from "@/components/admin/Modal";
 import Toast from "@/components/admin/Toast";
+import ConfirmDialog from "@/components/admin/ConfirmDialog";
 import { deleteContact, getAdminContacts, markContactRead } from "@/lib/api";
 import { clearSession, describeError, formatDateTime, getToken } from "@/lib/admin";
 
@@ -21,6 +22,7 @@ export default function AdminMessagesPage() {
   const [toast, setToast] = useState("");
   const [selected, setSelected] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [confirmTarget, setConfirmTarget] = useState(null);
 
   const load = useCallback(
     async (targetPage) => {
@@ -87,18 +89,22 @@ export default function AdminMessagesPage() {
     }
   };
 
-  const handleDelete = async (message) => {
-    if (!window.confirm(`Hapus pesan dari "${message.name}"?`)) return;
+  const handleDelete = (message) => {
+    setConfirmTarget(message);
+  };
 
+  const confirmDelete = async () => {
+    if (!confirmTarget) return;
     setDeleting(true);
     setError("");
 
     try {
-      await deleteContact(getToken(), message.id);
+      await deleteContact(getToken(), confirmTarget.id);
 
-      if (selected?.id === message.id) setSelected(null);
+      if (selected?.id === confirmTarget.id) setSelected(null);
 
       setToast("Pesan berhasil dihapus.");
+      setConfirmTarget(null);
       await load(page);
     } catch (requestError) {
       setError(describeError(requestError));
@@ -330,6 +336,15 @@ export default function AdminMessagesPage() {
       </Modal>
 
       <Toast message={toast} onClose={() => setToast("")} />
+
+      <ConfirmDialog
+        open={confirmTarget !== null}
+        title="Hapus pesan"
+        message={confirmTarget ? `Hapus pesan dari "${confirmTarget.name}"?` : ""}
+        onConfirm={confirmDelete}
+        onCancel={() => setConfirmTarget(null)}
+        loading={deleting}
+      />
     </div>
   );
 }

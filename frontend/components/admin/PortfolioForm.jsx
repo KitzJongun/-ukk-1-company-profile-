@@ -182,7 +182,20 @@ export default function PortfolioForm({ initial, onSaved, onCancel }) {
           className="block w-full text-sm text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-slate-700"
         />
         {images.length > 0 && (
-          <p className="mt-1 text-xs text-slate-500">{images.length} file dipilih.</p>
+          <>
+            <p className="mt-1 text-xs text-slate-500">{images.length} file dipilih.</p>
+            <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
+              {images.map((file, index) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={`${file.name}-${index}`}
+                  src={URL.createObjectURL(file)}
+                  alt={file.name}
+                  className="h-20 w-full rounded-lg border border-slate-200 object-cover"
+                />
+              ))}
+            </div>
+          </>
         )}
       </Field>
 

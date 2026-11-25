@@ -111,6 +111,17 @@ export default function PageForm({ initial, onSaved, onCancel }) {
             </label>
           </>
         )}
+        {image && (
+          <div className="mt-3">
+            <p className="mb-1 text-xs text-slate-500">Pratinjau gambar baru:</p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={URL.createObjectURL(image)}
+              alt="Pratinjau"
+              className="h-24 w-auto rounded-lg border border-slate-200 object-cover"
+            />
+          </div>
+        )}
       </Field>
 
       <FormActions submitting={submitting} onCancel={onCancel} />
