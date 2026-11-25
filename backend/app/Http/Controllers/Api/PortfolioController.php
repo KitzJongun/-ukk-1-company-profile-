@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePortfolioRequest;
+use App\Http\Requests\UpdatePortfolioRequest;
 use App\Http\Resources\PortfolioResource;
 use App\Models\Portfolio;
 use App\Models\PortfolioImage;
@@ -16,9 +18,11 @@ class PortfolioController extends Controller
         return PortfolioResource::collection(Portfolio::with('images')->latest()->get());
     }
 
-    public function show($slug)
+    public function show($idOrSlug)
     {
-        $portfolio = Portfolio::with('images')->where('slug', $slug)->first();
+        $portfolio = is_numeric($idOrSlug)
+            ? Portfolio::with('images')->find($idOrSlug)
+            : Portfolio::with('images')->where('slug', $idOrSlug)->first();
 
         if (! $portfolio) {
             return response()->json(['message' => 'Portofolio tidak ditemukan'], 404);
@@ -27,16 +31,9 @@ class PortfolioController extends Controller
         return new PortfolioResource($portfolio);
     }
 
-    public function store(Request $request)
+    public function store(StorePortfolioRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'short_description' => 'required|string|max:255',
-            'full_detail' => 'required|string',
-            'project_date' => 'required|date',
-            'images' => 'nullable|array',
-            'images.*' => 'image|max:5120',
-        ]);
+        $validated = $request->validated();
 
         $portfolio = Portfolio::create([
             'title' => $validated['title'],
@@ -54,7 +51,7 @@ class PortfolioController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdatePortfolioRequest $request, $id)
     {
         $portfolio = Portfolio::with('images')->find($id);
 
@@ -62,16 +59,7 @@ class PortfolioController extends Controller
             return response()->json(['message' => 'Portofolio tidak ditemukan'], 404);
         }
 
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'short_description' => 'sometimes|required|string|max:255',
-            'full_detail' => 'sometimes|required|string',
-            'project_date' => 'sometimes|required|date',
-            'images' => 'nullable|array',
-            'images.*' => 'image|max:5120',
-            'deleted_image_ids' => 'nullable|array',
-            'deleted_image_ids.*' => 'integer',
-        ]);
+        $validated = $request->validated();
 
         if (isset($validated['title']) && $validated['title'] !== $portfolio->title) {
             $portfolio->slug = Portfolio::generateSlug($validated['title'], $portfolio->id);
@@ -82,7 +70,6 @@ class PortfolioController extends Controller
             array_flip(['title', 'short_description', 'full_detail', 'project_date'])
         ))->save();
 
-        // Hapus gambar yang dipilih admin dari galeri
         if (! empty($validated['deleted_image_ids'])) {
             $images = PortfolioImage::where('portfolio_id', $portfolio->id)
                 ->whereIn('id', $validated['deleted_image_ids'])
@@ -119,9 +106,6 @@ class PortfolioController extends Controller
         return response()->json(['message' => 'Portofolio berhasil dihapus'], 200);
     }
 
-    /**
-     * Simpan semua file dari field images[] ke storage dan tabel portfolio_images.
-     */
     private function storeImages(Request $request, Portfolio $portfolio): void
     {
         if (! $request->hasFile('images')) {

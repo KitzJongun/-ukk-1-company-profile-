@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreServiceRequest;
+use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 use Illuminate\Http\Request;
@@ -15,9 +17,11 @@ class ServiceController extends Controller
         return ServiceResource::collection(Service::latest()->get());
     }
 
-    public function show($slug)
+    public function show($idOrSlug)
     {
-        $service = Service::where('slug', $slug)->first();
+        $service = is_numeric($idOrSlug)
+            ? Service::find($idOrSlug)
+            : Service::where('slug', $idOrSlug)->first();
 
         if (! $service) {
             return response()->json(['message' => 'Layanan tidak ditemukan'], 404);
@@ -26,13 +30,9 @@ class ServiceController extends Controller
         return new ServiceResource($service);
     }
 
-    public function store(Request $request)
+    public function store(StoreServiceRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'short_description' => 'required|string|max:255',
-            'icon' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
 
         $service = Service::create([
             'title' => $validated['title'],
@@ -49,7 +49,7 @@ class ServiceController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateServiceRequest $request, $id)
     {
         $service = Service::find($id);
 
@@ -57,21 +57,16 @@ class ServiceController extends Controller
             return response()->json(['message' => 'Layanan tidak ditemukan'], 404);
         }
 
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'short_description' => 'sometimes|required|string|max:255',
-            'icon' => 'nullable|image|max:5120',
-            'remove_icon' => 'sometimes|boolean',
-        ]);
+        $validated = $request->validated();
 
         if (isset($validated['title']) && $validated['title'] !== $service->title) {
             $service->slug = Service::generateSlug($validated['title'], $service->id);
+            $service->title = $validated['title'];
         }
 
-        $service->fill(array_intersect_key(
-            $validated,
-            array_flip(['title', 'short_description'])
-        ));
+        if (isset($validated['short_description'])) {
+            $service->short_description = $validated['short_description'];
+        }
 
         if ($request->hasFile('icon')) {
             if ($service->icon) {

@@ -3,19 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
         $admin = Admin::where('email', $request->email)->first();
 
         if (! $admin || ! Hash::check($request->password, $admin->password)) {
@@ -31,6 +27,13 @@ class AuthController extends Controller
             'admin' => $admin,
             'token' => $token
         ], 200);
+    }
+
+    public function me(Request $request)
+    {
+        return response()->json([
+            'admin' => $request->user(),
+        ]);
     }
 
     public function logout(Request $request)

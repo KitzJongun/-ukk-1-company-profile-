@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePageRequest;
+use App\Http\Requests\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
 use Illuminate\Http\Request;
@@ -15,9 +17,14 @@ class PageController extends Controller
         return PageResource::collection(Page::latest()->get());
     }
 
-    public function show($slug)
+    /**
+     * Mendukung pencarian berdasarkan slug (publik) maupun id (admin).
+     */
+    public function show($idOrSlug)
     {
-        $page = Page::where('slug', $slug)->first();
+        $page = is_numeric($idOrSlug)
+            ? Page::find($idOrSlug)
+            : Page::where('slug', $idOrSlug)->first();
 
         if (! $page) {
             return response()->json(['message' => 'Halaman tidak ditemukan'], 404);
@@ -26,13 +33,9 @@ class PageController extends Controller
         return new PageResource($page);
     }
 
-    public function store(Request $request)
+    public function store(StorePageRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
 
         $page = Page::create([
             'title' => $validated['title'],
@@ -49,7 +52,7 @@ class PageController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdatePageRequest $request, $id)
     {
         $page = Page::find($id);
 
@@ -57,12 +60,7 @@ class PageController extends Controller
             return response()->json(['message' => 'Halaman tidak ditemukan'], 404);
         }
 
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'content' => 'sometimes|required|string',
-            'image' => 'nullable|image|max:5120',
-            'remove_image' => 'sometimes|boolean',
-        ]);
+        $validated = $request->validated();
 
         if (isset($validated['title']) && $validated['title'] !== $page->title) {
             $page->slug = Page::generateSlug($validated['title'], $page->id);
